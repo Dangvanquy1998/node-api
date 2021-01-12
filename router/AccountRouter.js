@@ -10,6 +10,8 @@ const jwt = require('jsonwebtoken');
 
 const checkAuthentication = require('../common/authentication')
 
+const mail = require('../common/mail');
+
 const AccountModel = require('../model/AccountModel');
 
 router.post('/login', async (req, res) => {
@@ -93,6 +95,9 @@ const Account = new AccountModel({
     userType: result.userType,
     token: accessToken
    });
+
+   
+  mail.sendMail(email, 'Xác thực tài khoản', '<p>Mã xác thực tài khoản của bạn là ' + result.verifyEmail + '</p>');
   } else {
    res.json({'message': err})
   }
