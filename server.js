@@ -30,12 +30,15 @@ mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedT
 const AccountRouter = require('./router/AccountRouter.js');
 const CategoryRouter = require('./router/CategoryRouter');
 const ProductRouter = require('./router/ProductRouter');
+const MenuRouter = require('./router/MenuRouter');
 
 app.use('/account', AccountRouter);
 
 app.use('/category', CategoryRouter);
 
 app.use('/product', ProductRouter);
+
+app.use('/menu', MenuRouter);
 
 app.use(function (req, res, next) {
 

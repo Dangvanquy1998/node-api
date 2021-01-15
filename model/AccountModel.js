@@ -7,8 +7,8 @@ const AccountSchem = mongoose.Schema({
  name: String,
  email: String,
  phone: String,
- status: String, //1.active 2.approve,
- verifyEmail: String, 
+ status: String,
+ verifyEmail: String, //1.active 2.approve,
  userType: String // 1.admin 2.customer
 });
 
