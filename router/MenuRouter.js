@@ -17,13 +17,13 @@ router.get('/getMenu', (req, res) => {
                 data: menus
             })
         } else {
-            if (menus) {
-                res.json({
-                    responseCode: 200,
-                    message: 'Truy vấn danh sách thành công',
-                    data: null
-                })
-            }
+
+            res.json({
+                responseCode: 200,
+                message: 'Truy vấn danh sách thành công',
+                data: null
+            })
+
         }
     })
 })
