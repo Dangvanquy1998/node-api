@@ -10,6 +10,8 @@ const jwt = require('jsonwebtoken');
 
 const checkAuthentication = require('../common/authentication')
 
+const mail = require('../common/mail');
+
 const AccountModel = require('../model/AccountModel');
 
 router.post('/login', async (req, res) => {
@@ -93,12 +95,57 @@ const Account = new AccountModel({
     userType: result.userType,
     token: accessToken
    });
+
+   
+  mail.sendMail(email, 'Xác thực tài khoản', '<p>Mã xác thực tài khoản của bạn là ' + result.verifyEmail + '</p>');
   } else {
    res.json({'message': err})
   }
  });
  }
 
+})
+
+router.post('/verifyotp', async (req, res) => {
+  let otp = req.body.otp;
+  let userId = req.body.userId;
+
+  let user = await AccountModel.findOne({id: userId});
+
+  if (user) {
+    if (otp === user.verifyEmail) {
+      
+      AccountModel.findOneAndUpdate({id: userId}, {$set:{status: 1}}).exec((err, account) => {
+        if (account) {
+          let accessToken = jwt.sign({id: account.id,username: account.username, },process.env.ACCESS_TOKEN_SECRET);    
+           res.json({
+            id: account.id,
+            username: account.username,
+            name: account.name,
+            email: account.email,
+            phone: account.phone,
+            status: 1,
+            verifyEmail: account.verifyEmail,
+            userType: account.userType,
+            token: accessToken
+           });
+        }
+      })
+
+     
+    } else {
+      res.json({
+        responseCode: 500,
+        message: 'Mã xác thực không chính xác'
+      })
+    }
+  } else {
+    res.json({
+        responseCode: 500,
+        message: 'Tài khoản không tồn tại'
+      })
+  }
+  
 })
 
 router.get('/accounts', checkAuthentication, (req, res) => {

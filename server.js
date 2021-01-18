@@ -6,7 +6,7 @@ const app = express();
 
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
@@ -31,6 +31,7 @@ const AccountRouter = require('./router/AccountRouter.js');
 const CategoryRouter = require('./router/CategoryRouter');
 const ProductRouter = require('./router/ProductRouter');
 const MenuRouter = require('./router/MenuRouter');
+const PostRouter = require('./router/PostRouter');
 
 app.use('/account', AccountRouter);
 
@@ -39,6 +40,8 @@ app.use('/category', CategoryRouter);
 app.use('/product', ProductRouter);
 
 app.use('/menu', MenuRouter);
+
+app.use('/post', PostRouter);
 
 app.use(function (req, res, next) {
 
@@ -49,7 +52,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-Requested-By, Content-Type, Accept');
 
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
